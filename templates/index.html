@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moviai</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Moviai</h1>
+        <p>Provide a topic and select your models to generate a short film. The process may take several minutes.</p>
+
+        <div class="content-wrapper" id="content-wrapper">
+
+            <form action="/generate" method="post" class="form-card" id="generate-form">
+                <div class="form-group">
+                    <label for="topic">Film Topic</label>
+                    <textarea id="topic" name="topic" rows="1" placeholder="e.g., A robot learning to paint a sunset" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="scene_nr">Target Length</label>
+                    <select id="scene_nr" name="scene_nr">
+                        <option value="5">00:25</option>
+                        <option value="6">00:30</option>
+                        <option value="7">00:35</option>
+                        <option value="8">00:40</option>
+                        <option value="9">00:45</option>
+                        <option value="10">00:50</option>
+                        <option value="12">01:00</option>
+                        <option value="18">01:30</option>
+                        <option value="24">02:00</option>
+                        <option value="30">02:30</option>
+                        <option value="36">03:00</option>
+                        <option value="48">04:00</option>
+                        <option value="60">05:00</option>
+
+                </select>
+                </div>
+                <div class="form-group">
+                    <label for="image_model">Image Generation Model</label>
+                    <select id="image_model" name="image_model">
+                        {% for model in image_models %}
+                        <option value="{{ model }}">{{ model }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="video_model">Video Generation Model</label>
+                    <select id="video_model" name="video_model">
+                        {% for model in video_models %}
+                        <option value="{{ model }}">{{ model }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit">Generate Video</button>
+            </form>
+
+            <div class="right-panel" id="right-panel">
+                <div id="loader" style="display: none;">
+                    <div class="loader-spinner"></div>
+                    <p>Generating your film, this may take a few minutes...</p>
+                </div>
+
+                {% if result_video %}
+                <div class="result-card">
+                    <h2>Generation Complete</h2>
+                    <p>Your video is ready. Press play to watch.</p>
+                    <video controls preload="auto">
+                        <source src="{{ result_video }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('generate-form');
+            const wrapper = document.getElementById('content-wrapper');
+            const rightPanel = document.getElementById('right-panel');
+            const loader = document.getElementById('loader');
+            const resultCard = document.querySelector('.result-card');
+
+            if (resultCard) {
+                rightPanel.style.display = 'flex';
+            } else {
+                rightPanel.style.display = 'none';
+            }
+
+            form.addEventListener('submit', function() {
+                rightPanel.style.display = 'flex';
+                loader.style.display = 'block';
+                if (resultCard) {
+                    resultCard.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
