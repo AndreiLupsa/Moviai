@@ -1,5 +1,5 @@
 import asyncio
-from main import generate_movie_pipeline
+from pipeline import generate_movie_pipeline
 
 RUN_CONFIGS = [
     {
