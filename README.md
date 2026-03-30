@@ -49,3 +49,6 @@ Once the server is running, navigate to `http://localhost:8000` in your browser 
 ## About
 
 This project was developed as part of a university dissertation researching the application of distributed systems and generative AI to overcome the technical limitations of short-form video synthesis.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
